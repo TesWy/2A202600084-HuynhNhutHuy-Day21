@@ -255,6 +255,14 @@ def train(
 
     with mlflow.start_run():
         mlflow.log_params(params)
+        mlflow.log_params(
+            {
+                "data_path": data_path,
+                "eval_path": eval_path,
+                "train_rows": len(df_train),
+                "eval_rows": len(df_eval),
+            }
+        )
 
         model.fit(X_train, y_train)
         preds = model.predict(X_eval)
@@ -308,6 +316,10 @@ if __name__ == "__main__":
     tracking_uri = os.environ.get("MLFLOW_TRACKING_URI")
     if tracking_uri:
         mlflow.set_tracking_uri(tracking_uri)
+
+    experiment_name = os.environ.get("MLFLOW_EXPERIMENT_NAME")
+    if experiment_name:
+        mlflow.set_experiment(experiment_name)
 
     with open("params.yaml", encoding="utf-8") as f:
         params = yaml.safe_load(f)

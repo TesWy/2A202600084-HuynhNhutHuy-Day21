@@ -23,6 +23,7 @@ Create these in GitHub: Settings > Secrets and variables > Actions.
 | `MLFLOW_TRACKING_URI` | Optional DagsHub/remote MLflow URI |
 | `MLFLOW_TRACKING_USERNAME` | Optional remote MLflow username |
 | `MLFLOW_TRACKING_PASSWORD` | Optional remote MLflow token/password |
+| `MLFLOW_EXPERIMENT_NAME` | Optional MLflow experiment name, for example `day21-aws-mlops` |
 
 ## DVC remote
 

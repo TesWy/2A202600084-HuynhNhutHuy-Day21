@@ -63,6 +63,7 @@ jobs:
           echo "MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }}" >> "$GITHUB_ENV"
           echo "MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}" >> "$GITHUB_ENV"
           echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "MLFLOW_EXPERIMENT_NAME=${{ secrets.MLFLOW_EXPERIMENT_NAME }}" >> "$GITHUB_ENV"
 
       - name: Pull data with DVC
         run: dvc pull data/train_phase1.csv.dvc data/eval.csv.dvc
