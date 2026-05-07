@@ -283,6 +283,13 @@ def train(
 
         metrics = {
             "model_type": params["model_type"],
+            "git_sha": os.environ.get("GITHUB_SHA", "local"),
+            "github_run_id": os.environ.get("GITHUB_RUN_ID", "local"),
+            "github_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", "local"),
+            "data_path": data_path,
+            "eval_path": eval_path,
+            "train_rows": len(df_train),
+            "eval_rows": len(df_eval),
             "accuracy": acc,
             "f1_score": f1,
             "precision_weighted": precision,
@@ -297,6 +304,14 @@ def train(
             mlflow.log_metric(key, metrics[key])
         for label, ratio in label_distribution.items():
             mlflow.log_metric(f"train_label_ratio_{label}", ratio)
+        mlflow.set_tags(
+            {
+                "git_sha": metrics["git_sha"],
+                "github_run_id": metrics["github_run_id"],
+                "data_path": data_path,
+                "eval_path": eval_path,
+            }
+        )
 
         _write_outputs(metrics, report_text, model)
         mlflow.sklearn.log_model(model, "model")

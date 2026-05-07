@@ -175,11 +175,16 @@ jobs:
           import boto3
 
           bucket = os.environ["S3_BUCKET"]
+          git_sha = os.environ["GITHUB_SHA"]
+          run_prefix = f"models/runs/{git_sha}"
           s3 = boto3.client("s3")
           uploads = [
               ("models/model.pkl", os.environ["MODEL_KEY"]),
               ("outputs/metrics.json", os.environ["METRICS_KEY"]),
               ("outputs/report.txt", os.environ["REPORT_KEY"]),
+              ("models/model.pkl", f"{run_prefix}/model.pkl"),
+              ("outputs/metrics.json", f"{run_prefix}/metrics.json"),
+              ("outputs/report.txt", f"{run_prefix}/report.txt"),
           ]
 
           for local_path, key in uploads:
