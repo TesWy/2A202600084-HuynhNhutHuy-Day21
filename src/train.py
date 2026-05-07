@@ -214,6 +214,22 @@ def _label_distribution(y_train) -> dict:
     return {str(label): float(counts.get(label, 0.0)) for label in LABELS}
 
 
+def _dvc_metadata(data_path: str) -> dict:
+    dvc_path = Path(f"{data_path}.dvc")
+    if not dvc_path.exists():
+        return {"md5": None, "size": None}
+
+    with open(dvc_path, encoding="utf-8") as f:
+        dvc_info = yaml.safe_load(f) or {}
+
+    outs = dvc_info.get("outs") or [{}]
+    first_out = outs[0]
+    return {
+        "md5": first_out.get("md5"),
+        "size": first_out.get("size"),
+    }
+
+
 def _write_outputs(metrics: dict, report_text: str, model) -> None:
     Path("outputs").mkdir(exist_ok=True)
     Path("models").mkdir(exist_ok=True)
@@ -236,6 +252,8 @@ def train(
 
     df_train = pd.read_csv(data_path)
     df_eval = pd.read_csv(eval_path)
+    data_dvc = _dvc_metadata(data_path)
+    eval_dvc = _dvc_metadata(eval_path)
 
     X_train = df_train.drop(columns=["target"])
     y_train = df_train["target"]
@@ -290,6 +308,10 @@ def train(
             "eval_path": eval_path,
             "train_rows": len(df_train),
             "eval_rows": len(df_eval),
+            "data_dvc_md5": data_dvc["md5"],
+            "data_dvc_size": data_dvc["size"],
+            "eval_dvc_md5": eval_dvc["md5"],
+            "eval_dvc_size": eval_dvc["size"],
             "accuracy": acc,
             "f1_score": f1,
             "precision_weighted": precision,
@@ -310,6 +332,8 @@ def train(
                 "github_run_id": metrics["github_run_id"],
                 "data_path": data_path,
                 "eval_path": eval_path,
+                "data_dvc_md5": data_dvc["md5"],
+                "eval_dvc_md5": eval_dvc["md5"],
             }
         )
 

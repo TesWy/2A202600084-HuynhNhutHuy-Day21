@@ -46,6 +46,10 @@ The `metrics.json` file records model, run, and data metadata:
 - `eval_path`
 - `train_rows`
 - `eval_rows`
+- `data_dvc_md5`
+- `data_dvc_size`
+- `eval_dvc_md5`
+- `eval_dvc_size`
 - `accuracy`
 - `f1_score`
 - `precision_weighted`
