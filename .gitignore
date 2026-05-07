@@ -1,4 +1,5 @@
 mlflow.db
+mlruns/
 mlartifacts/
 models/
 outputs/
@@ -8,6 +9,8 @@ data/train_phase2.csv
 sa-key.json
 .env
 .venv/
+deploy/
+*.pem
 __pycache__/
 *.pyc
 .DS_Store

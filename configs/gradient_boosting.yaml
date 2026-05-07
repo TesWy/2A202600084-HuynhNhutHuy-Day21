@@ -1,0 +1,4 @@
+model_type: gradient_boosting
+n_estimators: 150
+learning_rate: 0.08
+max_depth: 3

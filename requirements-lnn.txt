@@ -1,0 +1,5 @@
+# Optional local experiment dependencies for params.yaml model_type: lnn.
+# Install these only when you want to run the Liquid/CfC experiment locally:
+#   pip install -r requirements-lnn.txt
+torch
+ncps==1.0.1

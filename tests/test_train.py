@@ -1,93 +1,95 @@
-import os
 import json
+import os
+
 import numpy as np
 import pandas as pd
-from src.train import train
+
+from src.train import build_model, train
 
 
 FEATURE_NAMES = [
-    "fixed_acidity", "volatile_acidity", "citric_acid", "residual_sugar",
-    "chlorides", "free_sulfur_dioxide", "total_sulfur_dioxide", "density",
-    "pH", "sulphates", "alcohol", "wine_type",
+    "fixed_acidity",
+    "volatile_acidity",
+    "citric_acid",
+    "residual_sugar",
+    "chlorides",
+    "free_sulfur_dioxide",
+    "total_sulfur_dioxide",
+    "density",
+    "pH",
+    "sulphates",
+    "alcohol",
+    "wine_type",
 ]
 
 
 def _make_temp_data(tmp_path):
-    """
-    Tao dataset nho voi cung schema Wine Quality de su dung trong test.
-
-    pytest cung cap `tmp_path` la mot thu muc tam thoi, tu dong xoa sau khi test ket thuc.
-    Ham nay dung du lieu ngau nhien nen khong can ket noi GCS hay tai file CSV thuc.
-    """
     rng = np.random.default_rng(0)
     n = 200
+    X = rng.random((n, len(FEATURE_NAMES)))
+    y = rng.integers(0, 3, size=n)
 
-    # TODO 1: Tao mang X co kich thuoc (n, len(FEATURE_NAMES)) voi gia tri [0, 1)
-    # X = rng.random((n, len(FEATURE_NAMES)))
+    df = pd.DataFrame(X, columns=FEATURE_NAMES)
+    df["target"] = y
 
-    # TODO 2: Tao mang y gom n phan tu nguyen ngau nhien trong [0, 3)
-    # y = rng.integers(0, 3, size=n)
+    train_path = str(tmp_path / "train.csv")
+    eval_path = str(tmp_path / "eval.csv")
+    df.iloc[:160].to_csv(train_path, index=False)
+    df.iloc[160:].to_csv(eval_path, index=False)
+    return train_path, eval_path
 
-    # TODO 3: Xay dung DataFrame, them cot "target"
-    # df = pd.DataFrame(X, columns=FEATURE_NAMES)
-    # df["target"] = y
 
-    # TODO 4: Luu 160 dong dau lam tap huan luyen, 40 dong cuoi lam tap danh gia
-    # train_path = str(tmp_path / "train.csv")
-    # eval_path  = str(tmp_path / "eval.csv")
-    # df.iloc[:160].to_csv(train_path, index=False)
-    # df.iloc[160:].to_csv(eval_path,  index=False)
-
-    # TODO 5: Tra ve (train_path, eval_path)
-    # return train_path, eval_path
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+def test_build_model_supports_required_model_types():
+    for model_type in [
+        "logistic_regression",
+        "random_forest",
+        "extra_trees",
+        "gradient_boosting",
+        "mlp",
+    ]:
+        model = build_model({"model_type": model_type, "n_estimators": 10, "max_iter": 20})
+        assert model is not None
 
 
 def test_train_returns_float(tmp_path):
-    """Kiem tra ham train() tra ve mot so thuc nam trong [0.0, 1.0]."""
     train_path, eval_path = _make_temp_data(tmp_path)
+    acc = train(
+        {"model_type": "random_forest", "n_estimators": 10, "max_depth": 3},
+        data_path=train_path,
+        eval_path=eval_path,
+    )
 
-    # TODO 6: Goi ham train() voi sieu tham so nho (n_estimators=10, max_depth=3)
-    # va cac duong dan file vua tao
-    # acc = train({"n_estimators": 10, "max_depth": 3}, ...)
-
-    # TODO 7: Kiem tra ket qua
-    # assert isinstance(acc, float)
-    # assert 0.0 <= acc <= 1.0
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+    assert isinstance(acc, float)
+    assert 0.0 <= acc <= 1.0
 
 
 def test_metrics_file_created(tmp_path):
-    """Kiem tra file outputs/metrics.json duoc tao sau khi huan luyen."""
     train_path, eval_path = _make_temp_data(tmp_path)
     train(
-        {"n_estimators": 10, "max_depth": 3},
+        {"model_type": "random_forest", "n_estimators": 10, "max_depth": 3},
         data_path=train_path,
         eval_path=eval_path,
     )
 
-    # TODO 8: Kiem tra file ton tai va noi dung dung dinh dang
-    # assert os.path.exists("outputs/metrics.json")
-    # with open("outputs/metrics.json") as f:
-    #     metrics = json.load(f)
-    # assert "accuracy" in metrics
-    # assert "f1_score" in metrics
+    assert os.path.exists("outputs/metrics.json")
+    with open("outputs/metrics.json", encoding="utf-8") as f:
+        metrics = json.load(f)
 
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+    assert "accuracy" in metrics
+    assert "f1_score" in metrics
+    assert "precision_weighted" in metrics
+    assert "recall_weighted" in metrics
+    assert "confusion_matrix" in metrics
+    assert "label_distribution" in metrics
 
 
-def test_model_file_created(tmp_path):
-    """Kiem tra file models/model.pkl duoc tao sau khi huan luyen."""
+def test_report_and_model_files_created(tmp_path):
     train_path, eval_path = _make_temp_data(tmp_path)
     train(
-        {"n_estimators": 10, "max_depth": 3},
+        {"model_type": "random_forest", "n_estimators": 10, "max_depth": 3},
         data_path=train_path,
         eval_path=eval_path,
     )
 
-    # TODO 9: Kiem tra file model ton tai
-    # assert os.path.exists("models/model.pkl")
-
-    pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
+    assert os.path.exists("outputs/report.txt")
+    assert os.path.exists("models/model.pkl")

@@ -1,0 +1,4 @@
+[core]
+    remote = myremote
+[remote "myremote"]
+    url = s3://teswy-2a202600084-day21-mlops/dvc

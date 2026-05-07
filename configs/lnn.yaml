@@ -1,0 +1,5 @@
+model_type: lnn
+hidden_units: 32
+epochs: 30
+learning_rate: 0.01
+batch_size: 64

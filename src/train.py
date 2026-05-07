@@ -1,14 +1,230 @@
+import json
+import os
+from pathlib import Path
+
+import joblib
 import mlflow
 import mlflow.sklearn
 import pandas as pd
 import yaml
-import json
-import joblib
-import os
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.ensemble import ExtraTreesClassifier, GradientBoostingClassifier, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+)
+from sklearn.neural_network import MLPClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 EVAL_THRESHOLD = 0.70
+FEATURE_COUNT = 12
+LABELS = [0, 1, 2]
+
+
+class TorchCfCClassifier(BaseEstimator, ClassifierMixin):
+    """
+    Small optional Liquid-style classifier using ncps.torch.CfC.
+
+    Wine Quality is tabular, not a natural sequence task. For experimentation we
+    treat the 12 features as a short sequence of scalar observations. Keep this
+    model out of the default CI path unless torch and ncps are installed.
+    """
+
+    def __init__(
+        self,
+        hidden_units=32,
+        epochs=30,
+        lr=0.01,
+        batch_size=64,
+        random_state=42,
+    ):
+        self.hidden_units = hidden_units
+        self.epochs = epochs
+        self.lr = lr
+        self.batch_size = batch_size
+        self.random_state = random_state
+
+    def fit(self, X, y):
+        try:
+            import numpy as np
+            import torch
+            from ncps.torch import CfC
+        except ImportError as exc:
+            raise ImportError(
+                "model_type='lnn' requires optional packages: pip install torch ncps"
+            ) from exc
+
+        torch.manual_seed(self.random_state)
+        X_np = X.to_numpy(dtype="float32") if hasattr(X, "to_numpy") else X.astype("float32")
+        y_np = y.to_numpy(dtype="int64") if hasattr(y, "to_numpy") else y.astype("int64")
+        self.classes_ = np.array(sorted(set(y_np.tolist())))
+
+        X_tensor = torch.tensor(X_np, dtype=torch.float32).unsqueeze(-1)
+        y_tensor = torch.tensor(y_np, dtype=torch.long)
+
+        self.network_ = CfC(
+            input_size=1,
+            units=self.hidden_units,
+            proj_size=len(self.classes_),
+            batch_first=True,
+            return_sequences=False,
+        )
+        optimizer = torch.optim.Adam(self.network_.parameters(), lr=self.lr)
+        loss_fn = torch.nn.CrossEntropyLoss()
+
+        dataset = torch.utils.data.TensorDataset(X_tensor, y_tensor)
+        loader = torch.utils.data.DataLoader(
+            dataset,
+            batch_size=self.batch_size,
+            shuffle=True,
+            generator=torch.Generator().manual_seed(self.random_state),
+        )
+
+        self.network_.train()
+        for _ in range(self.epochs):
+            for batch_X, batch_y in loader:
+                optimizer.zero_grad()
+                logits, _ = self.network_(batch_X)
+                loss = loss_fn(logits, batch_y)
+                loss.backward()
+                optimizer.step()
+        return self
+
+    def predict(self, X):
+        import torch
+
+        X_np = X.to_numpy(dtype="float32") if hasattr(X, "to_numpy") else X.astype("float32")
+        X_tensor = torch.tensor(X_np, dtype=torch.float32).unsqueeze(-1)
+        self.network_.eval()
+        with torch.no_grad():
+            logits, _ = self.network_(X_tensor)
+            pred_idx = logits.argmax(dim=1).cpu().numpy()
+        return self.classes_[pred_idx]
+
+
+def _clean_params(params: dict) -> dict:
+    cleaned = dict(params or {})
+    cleaned.setdefault("model_type", "random_forest")
+    return cleaned
+
+
+def build_model(params: dict):
+    model_type = params["model_type"]
+
+    if model_type == "random_forest":
+        return RandomForestClassifier(
+            n_estimators=int(params.get("n_estimators", 100)),
+            max_depth=params.get("max_depth", 5),
+            min_samples_split=int(params.get("min_samples_split", 2)),
+            min_samples_leaf=int(params.get("min_samples_leaf", 1)),
+            max_features=params.get("max_features", "sqrt"),
+            random_state=42,
+            class_weight=params.get("class_weight"),
+            n_jobs=int(params.get("n_jobs", -1)),
+        )
+
+    if model_type == "extra_trees":
+        return ExtraTreesClassifier(
+            n_estimators=int(params.get("n_estimators", 500)),
+            max_depth=params.get("max_depth"),
+            min_samples_split=int(params.get("min_samples_split", 2)),
+            min_samples_leaf=int(params.get("min_samples_leaf", 1)),
+            max_features=params.get("max_features", "sqrt"),
+            random_state=42,
+            class_weight=params.get("class_weight", "balanced"),
+            n_jobs=int(params.get("n_jobs", -1)),
+        )
+
+    if model_type == "gradient_boosting":
+        return GradientBoostingClassifier(
+            n_estimators=int(params.get("n_estimators", 100)),
+            learning_rate=float(params.get("learning_rate", 0.1)),
+            max_depth=int(params.get("max_depth", 3)),
+            random_state=42,
+        )
+
+    if model_type == "logistic_regression":
+        return Pipeline(
+            steps=[
+                ("scaler", StandardScaler()),
+                (
+                    "model",
+                    LogisticRegression(
+                        C=float(params.get("C", 1.0)),
+                        max_iter=int(params.get("max_iter", 1000)),
+                        class_weight=params.get("class_weight"),
+                        random_state=42,
+                    ),
+                ),
+            ]
+        )
+
+    if model_type == "mlp":
+        hidden_layer_sizes = params.get("hidden_layer_sizes", [64, 32])
+        if isinstance(hidden_layer_sizes, int):
+            hidden_layer_sizes = [hidden_layer_sizes]
+        return Pipeline(
+            steps=[
+                ("scaler", StandardScaler()),
+                (
+                    "model",
+                    MLPClassifier(
+                        hidden_layer_sizes=tuple(hidden_layer_sizes),
+                        alpha=float(params.get("alpha", 0.0001)),
+                        learning_rate_init=float(params.get("learning_rate_init", 0.001)),
+                        max_iter=int(params.get("max_iter", 500)),
+                        early_stopping=True,
+                        random_state=42,
+                    ),
+                ),
+            ]
+        )
+
+    if model_type == "lnn":
+        return Pipeline(
+            steps=[
+                ("scaler", StandardScaler()),
+                (
+                    "model",
+                    TorchCfCClassifier(
+                        hidden_units=int(params.get("hidden_units", 32)),
+                        epochs=int(params.get("epochs", 30)),
+                        lr=float(params.get("learning_rate", 0.01)),
+                        batch_size=int(params.get("batch_size", 64)),
+                        random_state=42,
+                    ),
+                ),
+            ]
+        )
+
+    raise ValueError(
+        "Unsupported model_type. Use one of: random_forest, extra_trees, gradient_boosting, "
+        "logistic_regression, mlp, lnn."
+    )
+
+
+def _label_distribution(y_train) -> dict:
+    counts = y_train.value_counts(normalize=True).to_dict()
+    return {str(label): float(counts.get(label, 0.0)) for label in LABELS}
+
+
+def _write_outputs(metrics: dict, report_text: str, model) -> None:
+    Path("outputs").mkdir(exist_ok=True)
+    Path("models").mkdir(exist_ok=True)
+
+    with open("outputs/metrics.json", "w", encoding="utf-8") as f:
+        json.dump(metrics, f, indent=2)
+
+    with open("outputs/report.txt", "w", encoding="utf-8") as f:
+        f.write(report_text)
+
+    joblib.dump(model, "models/model.pkl")
 
 
 def train(
@@ -16,69 +232,83 @@ def train(
     data_path: str = "data/train_phase1.csv",
     eval_path: str = "data/eval.csv",
 ) -> float:
-    """
-    Huan luyen mo hinh va ghi nhan ket qua vao MLflow.
+    params = _clean_params(params)
 
-    Tham so:
-        params     : dict chua cac sieu tham so cho RandomForestClassifier.
-        data_path  : duong dan den file du lieu huan luyen.
-        eval_path  : duong dan den file du lieu danh gia.
+    df_train = pd.read_csv(data_path)
+    df_eval = pd.read_csv(eval_path)
 
-    Tra ve:
-        accuracy (float): do chinh xac tren tap danh gia.
-    """
+    X_train = df_train.drop(columns=["target"])
+    y_train = df_train["target"]
+    X_eval = df_eval.drop(columns=["target"])
+    y_eval = df_eval["target"]
 
-    # TODO 1: Doc du lieu huan luyen va danh gia
-    # df_train = ...
-    # df_eval  = ...
+    if X_train.shape[1] != FEATURE_COUNT or X_eval.shape[1] != FEATURE_COUNT:
+        raise ValueError(f"Expected {FEATURE_COUNT} features for Wine Quality.")
 
-    # TODO 2: Tach dac trung (X) va nhan (y)
-    # X_train = df_train.drop(columns=["target"])
-    # y_train = ...
-    # X_eval  = ...
-    # y_eval  = ...
+    model = build_model(params)
+    label_distribution = _label_distribution(y_train)
+    drift_warnings = [
+        f"class {label} ratio {ratio:.3f} is below 0.10"
+        for label, ratio in label_distribution.items()
+        if ratio < 0.10
+    ]
 
     with mlflow.start_run():
+        mlflow.log_params(params)
 
-        # TODO 3: Ghi nhan cac sieu tham so
-        # mlflow.log_params(...)
+        model.fit(X_train, y_train)
+        preds = model.predict(X_eval)
 
-        # TODO 4: Khoi tao va huan luyen RandomForestClassifier
-        # Goi y: su dung random_state=42 de dam bao tinh tai tao
-        # model = RandomForestClassifier(...)
-        # model.fit(...)
+        acc = float(accuracy_score(y_eval, preds))
+        f1 = float(f1_score(y_eval, preds, average="weighted", zero_division=0))
+        precision = float(precision_score(y_eval, preds, average="weighted", zero_division=0))
+        recall = float(recall_score(y_eval, preds, average="weighted", zero_division=0))
 
-        # TODO 5: Du doan tren tap danh gia va tinh chi so
-        # preds = ...
-        # acc   = accuracy_score(...)
-        # f1    = f1_score(..., average="weighted")
+        report_text = classification_report(
+            y_eval,
+            preds,
+            labels=LABELS,
+            target_names=["low", "medium", "high"],
+            zero_division=0,
+        )
+        matrix = confusion_matrix(y_eval, preds, labels=LABELS).tolist()
 
-        # TODO 6: Ghi nhan chi so vao MLflow
-        # mlflow.log_metric("accuracy", ...)
-        # mlflow.log_metric("f1_score", ...)
-        # mlflow.sklearn.log_model(model, "model")
+        metrics = {
+            "model_type": params["model_type"],
+            "accuracy": acc,
+            "f1_score": f1,
+            "precision_weighted": precision,
+            "recall_weighted": recall,
+            "confusion_matrix": matrix,
+            "label_distribution": label_distribution,
+            "drift_warnings": drift_warnings,
+            "eval_threshold": EVAL_THRESHOLD,
+        }
 
-        # TODO 7: In ket qua ra man hinh
-        # print(f"Accuracy: {acc:.4f} | F1: {f1:.4f}")
+        for key in ["accuracy", "f1_score", "precision_weighted", "recall_weighted"]:
+            mlflow.log_metric(key, metrics[key])
+        for label, ratio in label_distribution.items():
+            mlflow.log_metric(f"train_label_ratio_{label}", ratio)
 
-        # TODO 8: Luu metrics ra file outputs/metrics.json
-        # File nay duoc doc boi GitHub Actions o Buoc 2
-        # os.makedirs("outputs", exist_ok=True)
-        # with open("outputs/metrics.json", "w") as f:
-        #     json.dump({"accuracy": acc, "f1_score": f1}, f)
+        _write_outputs(metrics, report_text, model)
+        mlflow.sklearn.log_model(model, "model")
+        mlflow.log_artifact("outputs/metrics.json")
+        mlflow.log_artifact("outputs/report.txt")
 
-        # TODO 9: Luu mo hinh ra file models/model.pkl
-        # File nay duoc upload len GCS o Buoc 2
-        # os.makedirs("models", exist_ok=True)
-        # joblib.dump(model, "models/model.pkl")
+        if drift_warnings:
+            print("Data distribution warning:")
+            for warning in drift_warnings:
+                print(f"- {warning}")
+        print(f"Model: {params['model_type']} | Accuracy: {acc:.4f} | F1: {f1:.4f}")
 
-        pass  # xoa dong nay sau khi hoan thanh tat ca TODO ben tren
-
-    # TODO 10: Tra ve acc
-    # return acc
+    return acc
 
 
 if __name__ == "__main__":
-    with open("params.yaml") as f:
+    tracking_uri = os.environ.get("MLFLOW_TRACKING_URI")
+    if tracking_uri:
+        mlflow.set_tracking_uri(tracking_uri)
+
+    with open("params.yaml", encoding="utf-8") as f:
         params = yaml.safe_load(f)
     train(params)
