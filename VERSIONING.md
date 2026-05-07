@@ -67,6 +67,16 @@ MLflow runs are logged to DagsHub when these GitHub Actions secrets are present:
 DagsHub is used to compare experiment runs by metrics such as accuracy and
 weighted F1. S3 is used for production model artifacts and EC2 deployment.
 
+Run several intentionally different model configurations when you need visible
+experiment differences:
+
+```bash
+python scripts/run_model_comparison.py
+```
+
+This writes comparison artifacts to `outputs/evidence/` and logs separate
+MLflow/DagsHub runs named `compare_<config>`.
+
 ## Promotion and Rollback
 
 The model under `models/latest/` is the production pointer. The versions under

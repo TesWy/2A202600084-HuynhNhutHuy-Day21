@@ -247,6 +247,7 @@ def train(
     params: dict,
     data_path: str = "data/train_phase1.csv",
     eval_path: str = "data/eval.csv",
+    run_name: str | None = None,
 ) -> float:
     params = _clean_params(params)
 
@@ -271,7 +272,7 @@ def train(
         if ratio < 0.10
     ]
 
-    with mlflow.start_run():
+    with mlflow.start_run(run_name=run_name):
         mlflow.log_params(params)
         mlflow.log_params(
             {
@@ -330,6 +331,7 @@ def train(
             {
                 "git_sha": metrics["git_sha"],
                 "github_run_id": metrics["github_run_id"],
+                "run_name": run_name or params["model_type"],
                 "data_path": data_path,
                 "eval_path": eval_path,
                 "data_dvc_md5": data_dvc["md5"],
