@@ -1,9 +1,11 @@
 import argparse
 import csv
 import json
+import os
 import sys
 from pathlib import Path
 
+import mlflow
 import yaml
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -73,6 +75,16 @@ def _write_comparison(rows: list[dict], output_dir: Path) -> None:
     print(f"Wrote {md_path}")
 
 
+def _configure_mlflow_from_env() -> None:
+    tracking_uri = os.environ.get("MLFLOW_TRACKING_URI")
+    if tracking_uri:
+        mlflow.set_tracking_uri(tracking_uri)
+
+    experiment_name = os.environ.get("MLFLOW_EXPERIMENT_NAME")
+    if experiment_name:
+        mlflow.set_experiment(experiment_name)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run multiple model configs and write a comparison table."
@@ -96,6 +108,8 @@ def main() -> None:
     config_paths = [Path(path) for path in (args.configs or DEFAULT_CONFIGS)]
     if args.include_lnn:
         config_paths.append(Path("configs/lnn.yaml"))
+
+    _configure_mlflow_from_env()
 
     rows = []
     for config_path in config_paths:
