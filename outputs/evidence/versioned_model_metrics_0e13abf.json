@@ -1,0 +1,38 @@
+{
+  "model_type": "random_forest",
+  "git_sha": "0e13abfe471a9daddc9becb361e30574e7476488",
+  "github_run_id": "25480128489",
+  "github_run_attempt": "1",
+  "data_path": "data/train_phase1.csv",
+  "eval_path": "data/eval.csv",
+  "train_rows": 5996,
+  "eval_rows": 500,
+  "accuracy": 0.75,
+  "f1_score": 0.7491105033538803,
+  "precision_weighted": 0.7530060971812468,
+  "recall_weighted": 0.75,
+  "confusion_matrix": [
+    [
+      139,
+      32,
+      2
+    ],
+    [
+      42,
+      172,
+      13
+    ],
+    [
+      1,
+      35,
+      64
+    ]
+  ],
+  "label_distribution": {
+    "0": 0.3685790527018012,
+    "1": 0.43512341561040696,
+    "2": 0.19629753168779185
+  },
+  "drift_warnings": [],
+  "eval_threshold": 0.7
+}

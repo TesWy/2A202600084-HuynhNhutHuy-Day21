@@ -1,0 +1,9 @@
+﻿2026-05-07 13:40:41        716 models/latest/metrics.json
+2026-05-07 13:40:40  230201713 models/latest/model.pkl
+2026-05-07 13:40:41        380 models/latest/report.txt
+2026-05-07 13:40:42        716 models/runs/0e13abfe471a9daddc9becb361e30574e7476488/metrics.json
+2026-05-07 13:40:41  230201713 models/runs/0e13abfe471a9daddc9becb361e30574e7476488/model.pkl
+2026-05-07 13:40:42        380 models/runs/0e13abfe471a9daddc9becb361e30574e7476488/report.txt
+
+Total Objects: 6
+   Total Size: 460405618

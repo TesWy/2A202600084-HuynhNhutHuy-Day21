@@ -1,0 +1,3 @@
+run_name,config,model_type,accuracy,f1_score,precision_weighted,recall_weighted,train_rows,data_dvc_md5
+compare_gradient_boosting,configs\gradient_boosting.yaml,gradient_boosting,0.618,0.614547144891682,0.6198049609515708,0.618,5996,5853e7711c78f02286e65fca6cb6e124
+compare_logistic_regression,configs\logistic_regression.yaml,logistic_regression,0.556,0.5516313544636154,0.5594778370546005,0.556,5996,5853e7711c78f02286e65fca6cb6e124

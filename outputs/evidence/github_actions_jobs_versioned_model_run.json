@@ -1,0 +1,389 @@
+﻿{
+    "total_count":  4,
+    "jobs":  [
+                 {
+                     "id":  74762189069,
+                     "run_id":  25480128489,
+                     "workflow_name":  "MLOps Pipeline",
+                     "head_branch":  "main",
+                     "run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489",
+                     "run_attempt":  1,
+                     "node_id":  "CR_kwDOSWgQT88AAAARaCx5DQ",
+                     "head_sha":  "0e13abfe471a9daddc9becb361e30574e7476488",
+                     "url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/jobs/74762189069",
+                     "html_url":  "https://github.com/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489/job/74762189069",
+                     "status":  "completed",
+                     "conclusion":  "success",
+                     "created_at":  "2026-05-07T06:37:08Z",
+                     "started_at":  "2026-05-07T06:37:16Z",
+                     "completed_at":  "2026-05-07T06:38:19Z",
+                     "name":  "Unit Test",
+                     "steps":  [
+                                   {
+                                       "name":  "Set up job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  1,
+                                       "started_at":  "2026-05-07T06:37:17Z",
+                                       "completed_at":  "2026-05-07T06:37:17Z"
+                                   },
+                                   {
+                                       "name":  "Run actions/checkout@v4",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  2,
+                                       "started_at":  "2026-05-07T06:37:17Z",
+                                       "completed_at":  "2026-05-07T06:37:18Z"
+                                   },
+                                   {
+                                       "name":  "Run actions/setup-python@v5",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  3,
+                                       "started_at":  "2026-05-07T06:37:18Z",
+                                       "completed_at":  "2026-05-07T06:37:18Z"
+                                   },
+                                   {
+                                       "name":  "Install dependencies",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  4,
+                                       "started_at":  "2026-05-07T06:37:18Z",
+                                       "completed_at":  "2026-05-07T06:38:08Z"
+                                   },
+                                   {
+                                       "name":  "Run unit tests",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  5,
+                                       "started_at":  "2026-05-07T06:38:08Z",
+                                       "completed_at":  "2026-05-07T06:38:18Z"
+                                   },
+                                   {
+                                       "name":  "Post Run actions/setup-python@v5",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  9,
+                                       "started_at":  "2026-05-07T06:38:18Z",
+                                       "completed_at":  "2026-05-07T06:38:18Z"
+                                   },
+                                   {
+                                       "name":  "Post Run actions/checkout@v4",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  10,
+                                       "started_at":  "2026-05-07T06:38:18Z",
+                                       "completed_at":  "2026-05-07T06:38:18Z"
+                                   },
+                                   {
+                                       "name":  "Complete job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  11,
+                                       "started_at":  "2026-05-07T06:38:18Z",
+                                       "completed_at":  "2026-05-07T06:38:18Z"
+                                   }
+                               ],
+                     "check_run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/check-runs/74762189069",
+                     "labels":  [
+                                    "ubuntu-latest"
+                                ],
+                     "runner_id":  1000000036,
+                     "runner_name":  "GitHub Actions 1000000036",
+                     "runner_group_id":  0,
+                     "runner_group_name":  "GitHub Actions"
+                 },
+                 {
+                     "id":  74762335224,
+                     "run_id":  25480128489,
+                     "workflow_name":  "MLOps Pipeline",
+                     "head_branch":  "main",
+                     "run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489",
+                     "run_attempt":  1,
+                     "node_id":  "CR_kwDOSWgQT88AAAARaC6z-A",
+                     "head_sha":  "0e13abfe471a9daddc9becb361e30574e7476488",
+                     "url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/jobs/74762335224",
+                     "html_url":  "https://github.com/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489/job/74762335224",
+                     "status":  "completed",
+                     "conclusion":  "success",
+                     "created_at":  "2026-05-07T06:38:20Z",
+                     "started_at":  "2026-05-07T06:38:28Z",
+                     "completed_at":  "2026-05-07T06:40:12Z",
+                     "name":  "Train",
+                     "steps":  [
+                                   {
+                                       "name":  "Set up job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  1,
+                                       "started_at":  "2026-05-07T06:38:29Z",
+                                       "completed_at":  "2026-05-07T06:38:30Z"
+                                   },
+                                   {
+                                       "name":  "Run actions/checkout@v4",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  2,
+                                       "started_at":  "2026-05-07T06:38:30Z",
+                                       "completed_at":  "2026-05-07T06:38:31Z"
+                                   },
+                                   {
+                                       "name":  "Run actions/setup-python@v5",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  3,
+                                       "started_at":  "2026-05-07T06:38:31Z",
+                                       "completed_at":  "2026-05-07T06:38:31Z"
+                                   },
+                                   {
+                                       "name":  "Install dependencies",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  4,
+                                       "started_at":  "2026-05-07T06:38:31Z",
+                                       "completed_at":  "2026-05-07T06:39:27Z"
+                                   },
+                                   {
+                                       "name":  "Configure AWS environment",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  5,
+                                       "started_at":  "2026-05-07T06:39:27Z",
+                                       "completed_at":  "2026-05-07T06:39:27Z"
+                                   },
+                                   {
+                                       "name":  "Pull data with DVC",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  6,
+                                       "started_at":  "2026-05-07T06:39:27Z",
+                                       "completed_at":  "2026-05-07T06:39:30Z"
+                                   },
+                                   {
+                                       "name":  "Train model",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  7,
+                                       "started_at":  "2026-05-07T06:39:30Z",
+                                       "completed_at":  "2026-05-07T06:40:03Z"
+                                   },
+                                   {
+                                       "name":  "Read metrics",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  8,
+                                       "started_at":  "2026-05-07T06:40:03Z",
+                                       "completed_at":  "2026-05-07T06:40:03Z"
+                                   },
+                                   {
+                                       "name":  "Read previous production metrics",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  9,
+                                       "started_at":  "2026-05-07T06:40:03Z",
+                                       "completed_at":  "2026-05-07T06:40:03Z"
+                                   },
+                                   {
+                                       "name":  "Upload training artifacts",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  10,
+                                       "started_at":  "2026-05-07T06:40:03Z",
+                                       "completed_at":  "2026-05-07T06:40:10Z"
+                                   },
+                                   {
+                                       "name":  "Post Run actions/setup-python@v5",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  19,
+                                       "started_at":  "2026-05-07T06:40:10Z",
+                                       "completed_at":  "2026-05-07T06:40:10Z"
+                                   },
+                                   {
+                                       "name":  "Post Run actions/checkout@v4",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  20,
+                                       "started_at":  "2026-05-07T06:40:10Z",
+                                       "completed_at":  "2026-05-07T06:40:10Z"
+                                   },
+                                   {
+                                       "name":  "Complete job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  21,
+                                       "started_at":  "2026-05-07T06:40:10Z",
+                                       "completed_at":  "2026-05-07T06:40:10Z"
+                                   }
+                               ],
+                     "check_run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/check-runs/74762335224",
+                     "labels":  [
+                                    "ubuntu-latest"
+                                ],
+                     "runner_id":  1000000037,
+                     "runner_name":  "GitHub Actions 1000000037",
+                     "runner_group_id":  0,
+                     "runner_group_name":  "GitHub Actions"
+                 },
+                 {
+                     "id":  74762563149,
+                     "run_id":  25480128489,
+                     "workflow_name":  "MLOps Pipeline",
+                     "head_branch":  "main",
+                     "run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489",
+                     "run_attempt":  1,
+                     "node_id":  "CR_kwDOSWgQT88AAAARaDIuTQ",
+                     "head_sha":  "0e13abfe471a9daddc9becb361e30574e7476488",
+                     "url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/jobs/74762563149",
+                     "html_url":  "https://github.com/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489/job/74762563149",
+                     "status":  "completed",
+                     "conclusion":  "success",
+                     "created_at":  "2026-05-07T06:40:12Z",
+                     "started_at":  "2026-05-07T06:40:21Z",
+                     "completed_at":  "2026-05-07T06:40:24Z",
+                     "name":  "Eval",
+                     "steps":  [
+                                   {
+                                       "name":  "Set up job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  1,
+                                       "started_at":  "2026-05-07T06:40:22Z",
+                                       "completed_at":  "2026-05-07T06:40:22Z"
+                                   },
+                                   {
+                                       "name":  "Check quality gates",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  2,
+                                       "started_at":  "2026-05-07T06:40:22Z",
+                                       "completed_at":  "2026-05-07T06:40:22Z"
+                                   },
+                                   {
+                                       "name":  "Complete job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  3,
+                                       "started_at":  "2026-05-07T06:40:22Z",
+                                       "completed_at":  "2026-05-07T06:40:22Z"
+                                   }
+                               ],
+                     "check_run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/check-runs/74762563149",
+                     "labels":  [
+                                    "ubuntu-latest"
+                                ],
+                     "runner_id":  1000000038,
+                     "runner_name":  "GitHub Actions 1000000038",
+                     "runner_group_id":  0,
+                     "runner_group_name":  "GitHub Actions"
+                 },
+                 {
+                     "id":  74762588513,
+                     "run_id":  25480128489,
+                     "workflow_name":  "MLOps Pipeline",
+                     "head_branch":  "main",
+                     "run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489",
+                     "run_attempt":  1,
+                     "node_id":  "CR_kwDOSWgQT88AAAARaDKRYQ",
+                     "head_sha":  "0e13abfe471a9daddc9becb361e30574e7476488",
+                     "url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/jobs/74762588513",
+                     "html_url":  "https://github.com/TesWy/2A202600084-HuynhNhutHuy-Day21/actions/runs/25480128489/job/74762588513",
+                     "status":  "completed",
+                     "conclusion":  "success",
+                     "created_at":  "2026-05-07T06:40:24Z",
+                     "started_at":  "2026-05-07T06:40:26Z",
+                     "completed_at":  "2026-05-07T06:40:55Z",
+                     "name":  "Deploy",
+                     "steps":  [
+                                   {
+                                       "name":  "Set up job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  1,
+                                       "started_at":  "2026-05-07T06:40:26Z",
+                                       "completed_at":  "2026-05-07T06:40:28Z"
+                                   },
+                                   {
+                                       "name":  "Build appleboy/ssh-action@v1.0.3",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  2,
+                                       "started_at":  "2026-05-07T06:40:28Z",
+                                       "completed_at":  "2026-05-07T06:40:31Z"
+                                   },
+                                   {
+                                       "name":  "Run actions/setup-python@v5",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  3,
+                                       "started_at":  "2026-05-07T06:40:31Z",
+                                       "completed_at":  "2026-05-07T06:40:31Z"
+                                   },
+                                   {
+                                       "name":  "Install AWS SDK",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  4,
+                                       "started_at":  "2026-05-07T06:40:31Z",
+                                       "completed_at":  "2026-05-07T06:40:36Z"
+                                   },
+                                   {
+                                       "name":  "Run actions/download-artifact@v4",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  5,
+                                       "started_at":  "2026-05-07T06:40:36Z",
+                                       "completed_at":  "2026-05-07T06:40:38Z"
+                                   },
+                                   {
+                                       "name":  "Configure AWS environment",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  6,
+                                       "started_at":  "2026-05-07T06:40:38Z",
+                                       "completed_at":  "2026-05-07T06:40:38Z"
+                                   },
+                                   {
+                                       "name":  "Publish model to S3",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  7,
+                                       "started_at":  "2026-05-07T06:40:38Z",
+                                       "completed_at":  "2026-05-07T06:40:42Z"
+                                   },
+                                   {
+                                       "name":  "SSH deploy to EC2",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  8,
+                                       "started_at":  "2026-05-07T06:40:42Z",
+                                       "completed_at":  "2026-05-07T06:40:54Z"
+                                   },
+                                   {
+                                       "name":  "Post Run actions/setup-python@v5",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  16,
+                                       "started_at":  "2026-05-07T06:40:54Z",
+                                       "completed_at":  "2026-05-07T06:40:54Z"
+                                   },
+                                   {
+                                       "name":  "Complete job",
+                                       "status":  "completed",
+                                       "conclusion":  "success",
+                                       "number":  17,
+                                       "started_at":  "2026-05-07T06:40:54Z",
+                                       "completed_at":  "2026-05-07T06:40:54Z"
+                                   }
+                               ],
+                     "check_run_url":  "https://api.github.com/repos/TesWy/2A202600084-HuynhNhutHuy-Day21/check-runs/74762588513",
+                     "labels":  [
+                                    "ubuntu-latest"
+                                ],
+                     "runner_id":  1000000039,
+                     "runner_name":  "GitHub Actions 1000000039",
+                     "runner_group_id":  0,
+                     "runner_group_name":  "GitHub Actions"
+                 }
+             ]
+}

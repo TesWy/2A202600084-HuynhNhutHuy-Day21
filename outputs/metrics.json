@@ -1,0 +1,42 @@
+{
+  "model_type": "random_forest",
+  "git_sha": "local",
+  "github_run_id": "local",
+  "github_run_attempt": "local",
+  "data_path": "C:\\WINDOWS\\Temp\\pytest-of-ASUS\\pytest-9\\test_report_and_model_files_cr0\\train.csv",
+  "eval_path": "C:\\WINDOWS\\Temp\\pytest-of-ASUS\\pytest-9\\test_report_and_model_files_cr0\\eval.csv",
+  "train_rows": 160,
+  "eval_rows": 40,
+  "data_dvc_md5": null,
+  "data_dvc_size": null,
+  "eval_dvc_md5": null,
+  "eval_dvc_size": null,
+  "accuracy": 0.275,
+  "f1_score": 0.27946708463949843,
+  "precision_weighted": 0.3586309523809524,
+  "recall_weighted": 0.275,
+  "confusion_matrix": [
+    [
+      4,
+      6,
+      5
+    ],
+    [
+      0,
+      4,
+      4
+    ],
+    [
+      3,
+      11,
+      3
+    ]
+  ],
+  "label_distribution": {
+    "0": 0.3,
+    "1": 0.36875,
+    "2": 0.33125
+  },
+  "drift_warnings": [],
+  "eval_threshold": 0.7
+}

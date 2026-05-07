@@ -2,7 +2,12 @@ mlflow.db
 mlruns/
 mlartifacts/
 models/
-outputs/
+outputs/*
+!outputs/*.png
+!outputs/metrics.json
+!outputs/report.txt
+!outputs/evidence/
+!outputs/evidence/**
 data/train_phase1.csv
 data/eval.csv
 data/train_phase2.csv

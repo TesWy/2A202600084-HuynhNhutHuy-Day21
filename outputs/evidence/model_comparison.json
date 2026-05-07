@@ -1,0 +1,90 @@
+[
+  {
+    "model_type": "gradient_boosting",
+    "git_sha": "local",
+    "github_run_id": "local",
+    "github_run_attempt": "local",
+    "data_path": "data/train_phase1.csv",
+    "eval_path": "data/eval.csv",
+    "train_rows": 5996,
+    "eval_rows": 500,
+    "data_dvc_md5": "5853e7711c78f02286e65fca6cb6e124",
+    "data_dvc_size": 368068,
+    "eval_dvc_md5": "b11de6b7adaa93a44278fd7e168b2288",
+    "eval_dvc_size": 30769,
+    "accuracy": 0.618,
+    "f1_score": 0.614547144891682,
+    "precision_weighted": 0.6198049609515708,
+    "recall_weighted": 0.618,
+    "confusion_matrix": [
+      [
+        119,
+        49,
+        5
+      ],
+      [
+        61,
+        146,
+        20
+      ],
+      [
+        3,
+        53,
+        44
+      ]
+    ],
+    "label_distribution": {
+      "0": 0.3685790527018012,
+      "1": 0.43512341561040696,
+      "2": 0.19629753168779185
+    },
+    "drift_warnings": [],
+    "eval_threshold": 0.7,
+    "run_name": "compare_gradient_boosting",
+    "config": "configs\\gradient_boosting.yaml"
+  },
+  {
+    "model_type": "logistic_regression",
+    "git_sha": "local",
+    "github_run_id": "local",
+    "github_run_attempt": "local",
+    "data_path": "data/train_phase1.csv",
+    "eval_path": "data/eval.csv",
+    "train_rows": 5996,
+    "eval_rows": 500,
+    "data_dvc_md5": "5853e7711c78f02286e65fca6cb6e124",
+    "data_dvc_size": 368068,
+    "eval_dvc_md5": "b11de6b7adaa93a44278fd7e168b2288",
+    "eval_dvc_size": 30769,
+    "accuracy": 0.556,
+    "f1_score": 0.5516313544636154,
+    "precision_weighted": 0.5594778370546005,
+    "recall_weighted": 0.556,
+    "confusion_matrix": [
+      [
+        112,
+        58,
+        3
+      ],
+      [
+        77,
+        128,
+        22
+      ],
+      [
+        7,
+        55,
+        38
+      ]
+    ],
+    "label_distribution": {
+      "0": 0.3685790527018012,
+      "1": 0.43512341561040696,
+      "2": 0.19629753168779185
+    },
+    "drift_warnings": [],
+    "eval_threshold": 0.7,
+    "run_name": "compare_logistic_regression",
+    "config": "configs\\logistic_regression.yaml"
+  }
+]
