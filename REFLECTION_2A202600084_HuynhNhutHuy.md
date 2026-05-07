@@ -45,17 +45,17 @@ Em có claim đủ 5 bonus:
 - **Bonus 4 - Rollback guard:** Eval job chặn deploy nếu accuracy mới thấp hơn production model hiện tại; thêm script promote/rollback model version.
 - **Bonus 5 - Cảnh báo lệch dữ liệu:** `metrics.json` ghi label distribution và `drift_warnings`; nếu lớp nào dưới 10% sẽ in warning.
 
-## Screenshots/Evidence nên nộp
+## Evidence đính kèm
 
-Các screenshot chính đã được gom vào thư mục `outputs/submission_evidence/` với tên thống nhất:
+Bài nộp có các evidence sau để chứng minh pipeline đã hoạt động đầy đủ:
 
-1. `outputs/submission_evidence/01_dagshub_experiments.png` - DagsHub Experiments có nhiều run và các cột metric như accuracy, f1_score.
-2. `outputs/submission_evidence/02_model_comparison_metrics.png` - bảng so sánh nhiều model/thuật toán khác nhau.
-3. `outputs/submission_evidence/03_github_actions_eval_gate_failed.png` - run đầu tiên bị chặn ở Eval gate khi accuracy dưới ngưỡng.
-4. `outputs/submission_evidence/04_github_actions_data_commit_green.png` - run do commit dữ liệu phase 2 kích hoạt, xanh đủ Unit Test, Train, Eval, Deploy.
-5. `outputs/submission_evidence/05_s3_dvc_data_objects.png` - S3 hiển thị dữ liệu đã được DVC push.
-6. `outputs/submission_evidence/06_s3_model_versions.png` - S3 hiển thị model version dưới `models/latest/` và `models/runs/<git_sha>/`.
-7. `outputs/submission_evidence/07_ec2_instance_running.png` - EC2 instance dùng để phục vụ FastAPI khi bài lab còn chạy.
-8. `outputs/submission_evidence/08_api_health_predict.png` - kết quả endpoint `/health` và `/predict`.
+1. DagsHub Experiments hiển thị nhiều lần chạy và các metric như `accuracy`, `f1_score`.
+2. Bảng so sánh nhiều mô hình/thuật toán khác nhau, gồm Logistic Regression, Gradient Boosting, MLP và Random Forest.
+3. GitHub Actions run đầu tiên bị chặn ở Eval gate khi accuracy dưới ngưỡng `0.70`.
+4. GitHub Actions run do commit dữ liệu phase 2 kích hoạt, hoàn thành thành công các job `Unit Test`, `Train`, `Eval`, `Deploy`.
+5. S3 bucket hiển thị dữ liệu đã được DVC push.
+6. S3 bucket hiển thị model version dưới `models/latest/` và `models/runs/<git_sha>/`.
+7. EC2 instance đã chạy FastAPI service trong quá trình thực hiện lab.
+8. Endpoint `/health` và `/predict` trả về kết quả hợp lệ.
 
-Ngoài các screenshot trên, thư mục `outputs/evidence/` chứa thêm evidence dạng JSON/Markdown/TXT để đối chiếu lại khi cần.
+Các evidence dạng JSON, Markdown và TXT trong `outputs/evidence/` được dùng để ghi lại chi tiết trạng thái pipeline, metric production, DVC diff, S3 listing và kết quả gọi API.
