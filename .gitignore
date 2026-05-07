@@ -8,6 +8,8 @@ outputs/*
 !outputs/report.txt
 !outputs/evidence/
 !outputs/evidence/**
+!outputs/submission_evidence/
+!outputs/submission_evidence/**
 data/train_phase1.csv
 data/eval.csv
 data/train_phase2.csv

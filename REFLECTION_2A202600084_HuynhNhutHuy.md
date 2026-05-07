@@ -45,16 +45,17 @@ Em có claim đủ 5 bonus:
 - **Bonus 4 - Rollback guard:** Eval job chặn deploy nếu accuracy mới thấp hơn production model hiện tại; thêm script promote/rollback model version.
 - **Bonus 5 - Cảnh báo lệch dữ liệu:** `metrics.json` ghi label distribution và `drift_warnings`; nếu lớp nào dưới 10% sẽ in warning.
 
-## Ảnh nên nộp
+## Screenshots/Evidence nên nộp
 
-Đặt tên ảnh theo thứ tự sau:
+Các screenshot chính đã được gom vào thư mục `outputs/submission_evidence/` với tên thống nhất:
 
-1. `01_mlflow_or_dagshub_experiments.png` - MLflow/DagsHub Experiments có ít nhất 3 run và cột accuracy, f1_score.
-2. `02_model_comparison_metrics.png` - bảng/ảnh so sánh các model khác nhau, ví dụ từ `outputs/evidence/model_comparison.md` hoặc DagsHub Compare.
-3. `03_github_actions_step2_green.png` - GitHub Actions run xanh đủ Unit Test, Train, Eval, Deploy.
-4. `04_github_actions_eval_gate_failed.png` - run đầu tiên Eval fail để chứng minh gate chặn deploy khi accuracy dưới 0.70.
-5. `05_github_actions_step3_data_commit_green.png` - run được kích hoạt bởi commit data phase 2 và xanh đủ các job.
-6. `06_s3_dvc_data_objects.png` - S3 bucket hiển thị thư mục `dvc/` chứa object dữ liệu.
-7. `07_s3_model_versions.png` - S3 hiển thị `models/latest/` và `models/runs/<git_sha>/`.
-8. `08_ec2_instance_running.png` - EC2 instance đang running.
-9. `09_api_health_predict.png` - kết quả `/health` và `/predict`.
+1. `outputs/submission_evidence/01_dagshub_experiments.png` - DagsHub Experiments có nhiều run và các cột metric như accuracy, f1_score.
+2. `outputs/submission_evidence/02_model_comparison_metrics.png` - bảng so sánh nhiều model/thuật toán khác nhau.
+3. `outputs/submission_evidence/03_github_actions_eval_gate_failed.png` - run đầu tiên bị chặn ở Eval gate khi accuracy dưới ngưỡng.
+4. `outputs/submission_evidence/04_github_actions_data_commit_green.png` - run do commit dữ liệu phase 2 kích hoạt, xanh đủ Unit Test, Train, Eval, Deploy.
+5. `outputs/submission_evidence/05_s3_dvc_data_objects.png` - S3 hiển thị dữ liệu đã được DVC push.
+6. `outputs/submission_evidence/06_s3_model_versions.png` - S3 hiển thị model version dưới `models/latest/` và `models/runs/<git_sha>/`.
+7. `outputs/submission_evidence/07_ec2_instance_running.png` - EC2 instance dùng để phục vụ FastAPI khi bài lab còn chạy.
+8. `outputs/submission_evidence/08_api_health_predict.png` - kết quả endpoint `/health` và `/predict`.
+
+Ngoài các screenshot trên, thư mục `outputs/evidence/` chứa thêm evidence dạng JSON/Markdown/TXT để đối chiếu lại khi cần.
