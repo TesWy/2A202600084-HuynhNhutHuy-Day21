@@ -62,3 +62,28 @@ MLflow runs are logged to DagsHub when these GitHub Actions secrets are present:
 
 DagsHub is used to compare experiment runs by metrics such as accuracy and
 weighted F1. S3 is used for production model artifacts and EC2 deployment.
+
+## Promotion and Rollback
+
+The model under `models/latest/` is the production pointer. The versions under
+`models/runs/<git_sha>/` are immutable history.
+
+If a new training run is worse than the current production model, the GitHub
+Actions Eval job blocks deployment automatically. If you still need to roll
+back manually to a previous good model, promote that run back to `latest`:
+
+```bash
+python scripts/promote_model_version.py <git_sha> \
+  --bucket teswy-2a202600084-day21-mlops
+```
+
+Preview the action without modifying S3:
+
+```bash
+python scripts/promote_model_version.py <git_sha> \
+  --bucket teswy-2a202600084-day21-mlops \
+  --dry-run
+```
+
+After promotion, restart the EC2 service so the API downloads the promoted
+`models/latest/model.pkl`.
